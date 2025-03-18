@@ -1,0 +1,29 @@
+# Bees in a Pod
+
+Run AI agents in Kubernetes
+
+## Prereqs
+
+* A Kubernetes cluster. We'll use [kind](https://kind.sigs.k8s.io/)
+* The [`kubectl` CLI](https://kubectl.docs.kubernetes.io/)
+* Access to an OpenAI-compatible LLM provider
+
+> Note: Using Kind+Ollama may require some extra config
+
+## Usage
+
+* Edit `deploy/deploy.yaml` to include proper values for `API_KEY` and `BASE_URL`
+* Build the `agent` image: `docker build -t agent .` from the `agent/` directory
+* Load container to Kubernetes: `kind load docker-image agent:latest`
+* Deploy to kubernetes: `kubectl apply -f deploy/`
+* Stream logs: `kubectl logs jobs/bee-agent -f`
+
+## To-Do
+
+* Add sidecar for formatting agent output
+* Add an example with another agent framework
+* Create a function signature for agents (to standardize output, etc.)
+* Simple build process for making containers from agents
+* Orchestrate an agentic workflow using Argo or Tekton
+* ...
+* ...
