@@ -12,6 +12,7 @@ metadata:
   name: bee-agent-configmap
 data:
   BASE_URL: <base-url-value>
+  PROMPT: What's the current weather in New York?
 ---
 apiVersion: batch/v1
 kind: Job

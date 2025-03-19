@@ -13,6 +13,7 @@ Run AI agents in Kubernetes
 ## Usage
 
 * Edit `deploy/deploy.yaml` to include proper values for `API_KEY` and `BASE_URL`
+* (optional) Edit `deploy/deploy.yaml` with a new `PROMPT` for the agent
 * Build the `agent` image: `docker build -t agent .` from the `agent/` directory
 * Load container to Kubernetes: `kind load docker-image agent:latest`
 * Deploy to kubernetes: `kubectl apply -f deploy/`
@@ -23,6 +24,7 @@ Run AI agents in Kubernetes
 * Add sidecar for formatting agent output
 * Add an example with another agent framework
 * Create a function signature for agents (to standardize output, etc.)
+* Use deployments instead of jobs (?)
 * Simple build process for making containers from agents
 * Orchestrate an agentic workflow using Argo or Tekton
 * ...

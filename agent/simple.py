@@ -22,6 +22,7 @@ def print_event(event_data, event_meta) -> None:
 
 
 async def main() -> None:
+    prompt = os.getenv("PROMPT")
     api_key = os.getenv("API_KEY")
     base_url = os.getenv("BASE_URL")
     model = "meta-llama/llama-3-1-70b-instruct"
@@ -34,7 +35,6 @@ async def main() -> None:
     llm = OpenAIChatModel(model_id=model, settings=settings)
     agent = ToolCallingAgent(llm=llm, tools=[OpenMeteoTool()], memory=UnconstrainedMemory())
 
-    prompt = "What's the current weather in New York?"
     response = await agent.run(prompt).on("*", print_event)
     print("Agent 🤖 : ", response.result.text)
 
