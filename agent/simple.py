@@ -9,6 +9,12 @@ from beeai_framework.errors import FrameworkError
 from beeai_framework.tools.weather.openmeteo import OpenMeteoTool
 from beeai_framework.adapters.openai.backend.chat import OpenAIChatModel
 
+from fastapi import FastAPI
+from pydantic import BaseModel
+import uvicorn
+
+app = FastAPI()
+
 
 def print_event(event_data, event_meta) -> None:
     """Process agent events and log appropriately"""
@@ -21,7 +27,8 @@ def print_event(event_data, event_meta) -> None:
         print(f"Agent({event_data.update.key}) 🤖 : ", event_data.update.parsed_value)
 
 
-async def main() -> None:
+@app.post("/")
+async def main():
     prompt = os.getenv("PROMPT")
     api_key = os.getenv("API_KEY")
     base_url = os.getenv("BASE_URL")
@@ -38,10 +45,8 @@ async def main() -> None:
     response = await agent.run(prompt).on("*", print_event)
     print("Agent 🤖 : ", response.result.text)
 
+    return response.result.text
+
 
 if __name__ == "__main__":
-    try:
-        asyncio.run(main())
-    except FrameworkError as e:
-        traceback.print_exc()
-        sys.exit(e.explain())
+    uvicorn.run(app, host="0.0.0.0", port=8080, log_level="warning")

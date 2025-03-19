@@ -17,14 +17,16 @@ Run AI agents in Kubernetes
 * Build the `agent` image: `docker build -t agent .` from the `agent/` directory
 * Load container to Kubernetes: `kind load docker-image agent:latest`
 * Deploy to kubernetes: `kubectl apply -f deploy/`
-* Stream logs: `kubectl logs jobs/bee-agent -f`
+* Expose the agent: `kubectl port-forward svc/bee-agent 8080`
+* Send a query to the agent: `curl -X POST localhost:8080`
+* Stream logs: `kubectl logs deploy/bee-agent -f`
 
 ## To-Do
 
-* Add sidecar for formatting agent output
+* Add sidecar for standardizing agent I/O
 * Add an example with another agent framework
 * Create a function signature for agents (to standardize output, etc.)
-* Use deployments instead of jobs (?)
+* ~~Use deployments instead of jobs~~
 * Simple build process for making containers from agents
 * Orchestrate an agentic workflow using Argo or Tekton
 * ...

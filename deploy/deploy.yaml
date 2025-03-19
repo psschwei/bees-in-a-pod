@@ -14,14 +14,21 @@ data:
   BASE_URL: <base-url-value>
   PROMPT: What's the current weather in New York?
 ---
-apiVersion: batch/v1
-kind: Job
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: bee-agent
+  labels:
+    app: bee-agent
 spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bee-agent
   template:
     metadata:
-      name: bee-agent
+      labels:
+        app: bee-agent
     spec:
       containers:
       - name: bee-agent
@@ -32,4 +39,17 @@ spec:
             name: bee-agent-configmap
         - secretRef:
             name: bee-agent-secrets
-      restartPolicy: OnFailure
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bee-agent
+spec:
+  selector:
+    app: bee-agent
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080

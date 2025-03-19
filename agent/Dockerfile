@@ -7,4 +7,4 @@ RUN pip install -r requirements.txt
 
 COPY simple.py .
 
-ENTRYPOINT ["python", "simple.py"]
+CMD ["fastapi", "run", "simple.py", "--port", "8080"]
