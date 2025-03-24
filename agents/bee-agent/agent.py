@@ -2,6 +2,7 @@ import asyncio
 import os
 import sys
 import traceback
+from typing import Optional
 
 from beeai_framework import UnconstrainedMemory
 from beeai_framework.agents.tool_calling.agent import ToolCallingAgent
@@ -15,8 +16,9 @@ import uvicorn
 
 app = FastAPI()
 
-class Input(BaseModel):
+class ACP(BaseModel):
     prompt: str
+    response: Optional[str] = ""
 
 def print_event(event_data, event_meta) -> None:
     """Process agent events and log appropriately"""
@@ -30,8 +32,8 @@ def print_event(event_data, event_meta) -> None:
 
 
 @app.post("/")
-async def main(agentInput: Input):
-    prompt = agentInput.prompt
+async def main(acp: ACP):
+    prompt = acp.prompt
     api_key = os.getenv("API_KEY")
     base_url = os.getenv("BASE_URL")
     model = "meta-llama/llama-3-1-70b-instruct"
@@ -47,7 +49,8 @@ async def main(agentInput: Input):
     response = await agent.run(prompt).on("*", print_event)
     print("Agent 🤖 : ", response.result.text)
 
-    return response.result.text
+    acp.response = response.result.text
+    return acp
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8080, log_level="warning")

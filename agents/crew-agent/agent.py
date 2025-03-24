@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 
 from crewai import Crew, LLM, Agent, Task, Process
 from fastapi import FastAPI
@@ -7,11 +8,12 @@ import uvicorn
 
 app = FastAPI()
 
-class Input(BaseModel):
+class ACP(BaseModel):
     prompt: str
+    response: Optional[str] = ""
 
 @app.post("/")
-async def main(agentInput: Input):
+async def main(acp: ACP):
     # Define your custom LLM configuration
     my_llm = LLM(
         base_url = f"{os.getenv('BASE_URL')}/v1",
@@ -31,7 +33,7 @@ async def main(agentInput: Input):
 
     # Task for the researcher
     research_task = Task(
-        description = agentInput.prompt,
+        description = acp.prompt,
         expected_output = 'A summary of the results',
         agent = researcher
     )
@@ -45,7 +47,8 @@ async def main(agentInput: Input):
 
     # Begin the task execution
     crewoutput = tech_crew.kickoff()
-    return crewoutput.raw
+    acp.response = crewoutput.raw
+    return acp
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8080, log_level="warning")
