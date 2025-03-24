@@ -18,9 +18,6 @@ app = FastAPI()
 class Input(BaseModel):
     prompt: str
 
-class Output(BaseModel):
-    answer: str
-
 def print_event(event_data, event_meta) -> None:
     """Process agent events and log appropriately"""
     if event_meta.name == "error":
@@ -51,7 +48,6 @@ async def main(agentInput: Input):
     print("Agent 🤖 : ", response.result.text)
 
     return response.result.text
-
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8080, log_level="warning")

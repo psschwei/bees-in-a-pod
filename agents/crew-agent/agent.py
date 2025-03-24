@@ -10,9 +10,6 @@ app = FastAPI()
 class Input(BaseModel):
     prompt: str
 
-class Output(BaseModel):
-    answer: str
-
 @app.post("/")
 async def main(agentInput: Input):
     # Define your custom LLM configuration
