@@ -7,8 +7,14 @@ import uvicorn
 
 app = FastAPI()
 
+class Input(BaseModel):
+    prompt: str
+
+class Output(BaseModel):
+    answer: str
+
 @app.post("/")
-async def main():
+async def main(agentInput: Input):
     # Define your custom LLM configuration
     my_llm = LLM(
         base_url = f"{os.getenv('BASE_URL')}/v1",
@@ -28,7 +34,7 @@ async def main():
 
     # Task for the researcher
     research_task = Task(
-        description = os.getenv("PROMPT"),
+        description = agentInput.prompt,
         expected_output = 'A summary of the results',
         agent = researcher
     )

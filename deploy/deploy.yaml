@@ -12,7 +12,6 @@ metadata:
   name: agent-configmap
 data:
   BASE_URL: <base-url-value>
-  PROMPT: What's the current weather in New York?
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -72,7 +71,7 @@ spec:
     spec:
       containers:
       - name: crew-agent
-        image: crewai:latest
+        image: crew-agent:latest
         imagePullPolicy: IfNotPresent
         envFrom:
         - configMapRef:

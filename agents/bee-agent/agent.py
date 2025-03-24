@@ -15,6 +15,11 @@ import uvicorn
 
 app = FastAPI()
 
+class Input(BaseModel):
+    prompt: str
+
+class Output(BaseModel):
+    answer: str
 
 def print_event(event_data, event_meta) -> None:
     """Process agent events and log appropriately"""
@@ -28,8 +33,8 @@ def print_event(event_data, event_meta) -> None:
 
 
 @app.post("/")
-async def main():
-    prompt = os.getenv("PROMPT")
+async def main(agentInput: Input):
+    prompt = agentInput.prompt
     api_key = os.getenv("API_KEY")
     base_url = os.getenv("BASE_URL")
     model = "meta-llama/llama-3-1-70b-instruct"
