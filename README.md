@@ -14,8 +14,8 @@ Run AI agents in Kubernetes
 
 * Edit `deploy/deploy.yaml` to include proper values for `API_KEY` and `BASE_URL`
 * (optional) Edit `deploy/deploy.yaml` with a new `PROMPT` for the agent
-* Build the `agent` image: `docker build -t agent .` from the `agent/` directory
-* Load container to Kubernetes: `kind load docker-image agent:latest`
+* Build the `beeai-agent` image: `docker build -t bee-agent .` from the `agents/bee-agent` directory
+* Load containers to Kubernetes: `kind load docker-image bee-agent:latest`
 * Deploy to kubernetes: `kubectl apply -f deploy/`
 * Expose the agent: `kubectl port-forward svc/bee-agent 8080`
 * Send a query to the agent: `curl -X POST localhost:8080`
@@ -24,7 +24,7 @@ Run AI agents in Kubernetes
 ## To-Do
 
 * Add sidecar for standardizing agent I/O
-* Add an example with another agent framework
+* ~~Add an example with another agent framework~~
 * Create a function signature for agents (to standardize output, etc.)
 * ~~Use deployments instead of jobs~~
 * Simple build process for making containers from agents
