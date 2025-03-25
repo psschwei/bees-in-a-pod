@@ -23,11 +23,11 @@ Run AI agents in Kubernetes
 
 ## To-Do
 
-* Add sidecar for standardizing agent I/O
 * ~~Add an example with another agent framework~~
-* Create a function signature for agents (to standardize output, etc.)
+* ~~Create a function signature for agents (to standardize output, etc.)~~
 * ~~Use deployments instead of jobs~~
-* Simple build process for making containers from agents
+* ~~Simple build process for making containers from agents~~
+* Update agents to use custom build process
 * Orchestrate an agentic workflow using Argo or Tekton
 * ...
 * ...
