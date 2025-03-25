@@ -1,19 +1,8 @@
+import asyncio
 import os
-from typing import Optional
-
 from crewai import Crew, LLM, Agent, Task, Process
-from fastapi import FastAPI
-from pydantic import BaseModel
-import uvicorn
 
-app = FastAPI()
-
-class ACP(BaseModel):
-    prompt: str
-    response: Optional[str] = ""
-
-@app.post("/")
-async def main(acp: ACP):
+async def run_agent(prompt):
     # Define your custom LLM configuration
     my_llm = LLM(
         base_url = f"{os.getenv('BASE_URL')}/v1",
@@ -33,7 +22,7 @@ async def main(acp: ACP):
 
     # Task for the researcher
     research_task = Task(
-        description = acp.prompt,
+        description = prompt,
         expected_output = 'A summary of the results',
         agent = researcher
     )
@@ -47,8 +36,7 @@ async def main(acp: ACP):
 
     # Begin the task execution
     crewoutput = tech_crew.kickoff()
-    acp.response = crewoutput.raw
-    return acp
+    return crewoutput.raw
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8080, log_level="warning")
+    asyncio.run(run_agent("How many albums did Bob Dylan release before his motorcycle accident?"))
