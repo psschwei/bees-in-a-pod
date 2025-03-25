@@ -4,7 +4,7 @@ Run AI agents in Kubernetes
 
 ## Prereqs
 
-* A Kubernetes cluster. We'll use [kind](https://kind.sigs.k8s.io/)
+* A Kubernetes cluster. We'll assume [kind](https://kind.sigs.k8s.io/)
 * The [`kubectl` CLI](https://kubectl.docs.kubernetes.io/)
 * Access to an OpenAI-compatible LLM provider
 
@@ -13,13 +13,12 @@ Run AI agents in Kubernetes
 ## Usage
 
 * Edit `deploy/deploy.yaml` to include proper values for `API_KEY` and `BASE_URL`
-* (optional) Edit `deploy/deploy.yaml` with a new `PROMPT` for the agent
-* Build the `beeai-agent` image: `docker build -t bee-agent .` from the `agents/bee-agent` directory
-* Load containers to Kubernetes: `kind load docker-image bee-agent:latest`
-* Deploy to kubernetes: `kubectl apply -f deploy/`
-* Expose the agent: `kubectl port-forward svc/bee-agent 8080`
-* Send a query to the agent: `curl -X POST localhost:8080`
-* Stream logs: `kubectl logs deploy/bee-agent -f`
+* Build your own [custom agent](agents/custom-agent/README.md)
+
+## Examples
+
+* [Using the BeeAI Framework](agents/bee-agent)
+* [Using CrewAI](agents/crew-agent)
 
 ## To-Do
 
@@ -27,7 +26,7 @@ Run AI agents in Kubernetes
 * ~~Create a function signature for agents (to standardize output, etc.)~~
 * ~~Use deployments instead of jobs~~
 * ~~Simple build process for making containers from agents~~
-* Update agents to use custom build process
-* Orchestrate an agentic workflow using Argo or Tekton
+* ~~Update agents to use custom build process~~
+* Orchestrate a multi-agent workflow using Argo or Tekton
 * ...
 * ...
