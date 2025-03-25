@@ -5,8 +5,8 @@ Go from a python script to a running container
 ## (Prereq) Build the base image
 
 ```bash
-cd bees-in-a-pod/agents/base-image
-docker build -t base-image .
+cd bees-in-a-pod/agents/base-agent
+docker build -t base-agent .
 ```
 
 > Note: eventually, this should be hosted on a container registry somewhere
