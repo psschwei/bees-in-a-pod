@@ -1,10 +1,10 @@
-FROM python:3.12.9
+FROM base-agent:latest
 
-WORKDIR /usr/arc/app
+WORKDIR /usr/src/app
 
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-COPY agent.py .
+COPY run_agent.py .
 
 CMD ["fastapi", "run", "agent.py", "--port", "8080"]
