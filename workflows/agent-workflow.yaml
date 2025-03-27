@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: agent-workflow-
+spec:
+  entrypoint: main
+  templates:
+    - name: main
+      steps:
+        - - name: get-weather
+            template: request
+            arguments:
+              parameters:
+              - name: url
+                value: "http://bee-agent.default.svc.cluster.local:8080"
+              - name: prompt
+                value: "What is the current weather in San Francisco?"
+        - - name: print
+            template: response
+            arguments:
+              parameters:
+              - name: message
+                value: "{{steps.get-weather.outputs.result}}"
+    - name: request
+      inputs:
+        parameters:
+          - name: url
+          - name: prompt
+      script:
+        image: cgr.dev/chainguard/curl:latest
+        command: [curl]
+        source: |
+          POST -H "Content-Type: application/json" -d '{"prompt": "{{inputs.parameters.prompt}}"}' {{inputs.parameters.url}}
+    - name: response
+      inputs:
+        parameters:
+        - name: message
+      container:
+        image: alpine:latest
+        command: [sh, -c]
+        args: ["echo {{inputs.parameters.message}}"]
