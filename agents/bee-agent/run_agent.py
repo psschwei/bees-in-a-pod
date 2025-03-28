@@ -1,4 +1,5 @@
 import asyncio
+import sys
 import os
 
 from beeai_framework import UnconstrainedMemory
@@ -26,4 +27,5 @@ async def run_agent(prompt):
     return response.result.text
 
 if __name__ == "__main__":
-    asyncio.run(run_agent("What is the current weather in New York?"))
+    prompt = sys.argv[1]
+    asyncio.run(run_agent(prompt))
