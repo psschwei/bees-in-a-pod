@@ -2,7 +2,7 @@ import asyncio
 import os
 from crewai import Crew, LLM, Agent, Task, Process
 
-async def run_agent(prompt):
+async def run_agent(prompt: str) -> str:
     # Define your custom LLM configuration
     my_llm = LLM(
         base_url = f"{os.getenv('BASE_URL')}/v1",

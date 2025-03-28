@@ -8,7 +8,7 @@ from beeai_framework.tools.weather.openmeteo import OpenMeteoTool
 from beeai_framework.adapters.openai.backend.chat import OpenAIChatModel
 
 
-async def run_agent(prompt):
+async def run_agent(prompt: str) -> str:
     api_key = os.getenv("API_KEY")
     base_url = os.getenv("BASE_URL")
     model = "meta-llama/llama-3-1-70b-instruct"
