@@ -1,0 +1,79 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: listening-recommendations-
+spec:
+  entrypoint: main
+  templates:
+    - name: main
+      steps:
+        - - name: artist
+            template: request
+            arguments:
+              parameters:
+              - name: url
+                value: "http://bee-agent.default.svc.cluster.local:8080"
+              - name: prompt
+                value: "Give me the name of one popular band from the 1980s. Return just the exact name of the band, no other text, and remove all apostrophes."
+        - - name: parse-artist
+            template: parse-artist
+            arguments:
+              parameters:
+              - name: text
+                value: "'{{steps.artist.outputs.result}}'"
+        - - name: album
+            template: request
+            arguments:
+              parameters:
+              - name: url
+                value: "http://crew-agent.default.svc.cluster.local:8080"
+              - name: prompt
+                value: "What were the three best albums by {{steps.parse-artist.outputs.result}}? Remove all apostrophes from the final result."
+        - - name: parse-album
+            template: parse-album
+            arguments:
+              parameters:
+              - name: text
+                value: "'{{steps.album.outputs.result}}'"
+        - - name: print
+            template: response
+            arguments:
+              parameters:
+              - name: message
+                value: "{{steps.parse-album.outputs.result}}"
+    - name: request
+      inputs:
+        parameters:
+          - name: url
+          - name: prompt
+      script:
+        image: quay.io/psschwei/nmap:latest
+        command: [bash]
+        source: |
+          curl -X POST -H "Content-Type: application/json" -d '{"prompt": "{{inputs.parameters.prompt}}"}' {{inputs.parameters.url}}
+    - name: parse-artist
+      inputs:
+        parameters:
+          - name: text
+      script:
+        image: quay.io/psschwei/nmap:latest
+        command: [bash]
+        source: |
+          echo {{inputs.parameters.text}} | jq -r .response
+    - name: parse-album
+      inputs:
+        parameters:
+          - name: text
+      script:
+        image: quay.io/psschwei/nmap:latest
+        command: [bash]
+        source: |
+          echo {{inputs.parameters.text}} | jq .response
+    - name: response
+      inputs:
+        parameters:
+        - name: message
+      container:
+        image: alpine:latest
+        command: [sh, -c]
+        args: ["echo {{inputs.parameters.message}}"]
