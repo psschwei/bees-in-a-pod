@@ -14,11 +14,13 @@ Run AI agents in Kubernetes
 
 * Edit `deploy/deploy.yaml` to include proper values for `API_KEY` and `BASE_URL`
 * Build your own [custom agent](agents/custom-agent/README.md)
+* Run a [workflow](workflows/README.md)
 
-## Examples
+## Example Agents
 
 * [Using the BeeAI Framework](agents/bee-agent)
 * [Using CrewAI](agents/crew-agent)
+
 
 ## To-Do
 
@@ -27,6 +29,6 @@ Run AI agents in Kubernetes
 * ~~Use deployments instead of jobs~~
 * ~~Simple build process for making containers from agents~~
 * ~~Update agents to use custom build process~~
-* Orchestrate a multi-agent workflow using Argo or Tekton
+* ~~Orchestrate a multi-agent workflow using Argo or Tekton~~
 * ...
 * ...
