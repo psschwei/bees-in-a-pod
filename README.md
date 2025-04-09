@@ -2,7 +2,7 @@
 
 Run AI agents in Kubernetes.
 
-See also the [hive cli](https://github.com/psschwei/hive-cli), a command line tool that simplifies the build/deploy process even more.
+See also the [agent cli](https://github.com/psschwei/agent-cli), a command line tool that simplifies the build/deploy process even more.
 
 ## Prereqs
 
